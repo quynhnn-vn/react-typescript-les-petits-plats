@@ -1,0 +1,35 @@
+.RecipeContainer {
+  height: 364px;
+}
+.RecipeImg {
+  height: 178px;
+  background-color: #c7bebe;
+  object-fit: cover;
+}
+.RecipeTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.RecipeTitle span:first-of-type {
+  font-weight: 400;
+  max-width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ClockIcon {
+  margin-right: 5px;
+}
+.RecipeContent {
+  flex: 1 1;
+  height: 109px;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.RecipeText {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}

@@ -1,0 +1,24 @@
+.RecipeTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.RecipeTitle span:first-of-type {
+  font-weight: 400;
+  max-width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ClockIcon {
+  margin-right: 5px;
+}
+.RecipeContent {
+  flex: 1 1;
+  text-align: justify;
+}
+.RecipeText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

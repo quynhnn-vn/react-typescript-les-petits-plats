@@ -1,0 +1,5 @@
+.AutocompleteBar {
+  display: flex;
+  gap: 10px;
+  height: 69px;
+}

@@ -1,0 +1,89 @@
+.Form {
+  height: 69px;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+.Form > input {
+  width: 250px;
+  background: inherit;
+  height: 100%;
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
+  padding: 0 24px;
+  border: 1px solid #86b7fe;
+}
+.Form > input::placeholder {
+  color: #ffffff;
+}
+.Form > input:focus {
+  background: inherit;
+  color: #fff;
+  box-shadow: unset;
+}
+.ArrowBtn {
+  border: none;
+  background: inherit;
+  position: relative;
+  left: -35px;
+}
+
+.Popover,
+.AllPopover {
+  border: 1px solid #86b7fe;
+  border-top: unset;
+  margin-top: -9px;
+  border-radius: 0 0 5px 5px;
+}
+.Popover {
+  width: 250px;
+}
+.AllPopover {
+  min-width: 667px;
+  overflow-y: scroll;
+  max-height: 397px;
+}
+
+.Suggestions {
+  list-style: none;
+  overflow-y: auto;
+  color: #fff;
+  padding: 0;
+}
+
+.Suggestions li {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  color: #ffffff;
+  padding: 0 24px;
+}
+.Suggestions li:first-letter {
+  text-transform: capitalize;
+}
+
+.SuggestionActive,
+.Suggestions li:hover {
+  /* background-color: #fff; */
+  color: #000;
+  cursor: pointer;
+  font-weight: 700;
+}
+.AllSuggestions {
+  width: 667px;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  overflow-y: scroll;
+}
+.NoSuggestions {
+  color: #999;
+  padding: 0.5rem;
+}

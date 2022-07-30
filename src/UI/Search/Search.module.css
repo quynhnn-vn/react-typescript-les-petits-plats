@@ -1,0 +1,29 @@
+.SearchTerm {
+  background: #e7e7e7 !important;
+  border-radius: 5px;
+  border: none;
+  height: 69px;
+  width: 100%;
+  padding: 0 24px;
+  margin-top: 20px;
+
+  font-family: "Lato", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #000000;
+}
+.SearchTerm::placeholder {
+  opacity: 0.25;
+}
+.SearchBar {
+  display: flex;
+  width: calc(100% + 33px);
+}
+
+.SearchIcon {
+  position: relative;
+  left: calc(-33px - 20px);
+  top: calc(33px / 4);
+}
