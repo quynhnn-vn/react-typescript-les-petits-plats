@@ -1,112 +1,109 @@
 import { useEffect, useState } from "react";
 
+import Search from "../../UI/Search/Search";
+import Tag from "../../UI/Tag/Tag";
+import AutocompleteBar from "../../UI/AutocompleteBar/AutocompleteBar";
+import RecipeList from "../../UI/RecipeList/RecipeList";
+
 import { recipes } from "../../assets/recipes";
 import icon from "../../assets/icon.svg";
 
 import { formatRecipes, removeDuplicate } from "../../common/utils";
 import {
   FormattedRecipe,
-  Option,
-  CurrentInput,
-  TagInput,
+  TagOptions,
+  SearchTagTerm,
+  SelectedTags,
 } from "../../types/types";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import Search from "../../UI/Search/Search";
-import Tag from "../../UI/Tag/Tag";
-import AutocompleteBar from "../../UI/AutocompleteBar/AutocompleteBar";
-import RecipeList from "../../UI/RecipeList/RecipeList";
 
 export default function Recipes() {
+  const [filteredRecipes, setFilteredRecipes] = useState<FormattedRecipe[]>([]);
+
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const [filteredRecipes, setFilteredRecipes] = useState<FormattedRecipe[]>([]);
-  const [options, setOptions] = useState<Option>();
-
-  const [currentInput, setCurrentInput] = useState<CurrentInput>({
+  const [tagOptions, setTagOptions] = useState<TagOptions>();
+  const [selectedTags, setSelectedTags] = useState<SelectedTags>({
+    ingredients: [],
+    appliances: [],
+    ustensils: [],
+  });
+  const [searchTagTerm, setSearchTagTerm] = useState<SearchTagTerm>({
     ingredients: "",
     appliances: "",
     ustensils: "",
   });
 
-  const [tagInput, setTagInput] = useState<TagInput>({
-    ingredients: [],
-    appliances: [],
-    ustensils: [],
-  });
-
   const formattedRecipes = formatRecipes(recipes);
-  const depsFormattedRecipes = JSON.stringify(formattedRecipes);
+  const dependencyRecipes = JSON.stringify(formattedRecipes);
+
+  const getTagOptions = (recipes: FormattedRecipe[]) => {
+    let ingredientOptions: string[][] = [],
+      applianceOptions: string[][] = [],
+      ustensilOptions: string[][] = [];
+
+    recipes.forEach((recipe: FormattedRecipe) => {
+      ingredientOptions.push(recipe.flatIngredients);
+      applianceOptions.push(recipe.appliance);
+      ustensilOptions.push(recipe.ustensils.flat());
+    });
+
+    setTagOptions({
+      ingredients: removeDuplicate(ingredientOptions.flat()),
+      appliances: removeDuplicate(applianceOptions.flat()),
+      ustensils: removeDuplicate(ustensilOptions.flat()),
+    });
+  };
 
   useEffect(() => {
-    if (formattedRecipes.length > 0) {
-      let ingredientOptions: string[][] = [],
-        applianceOptions: string[][] = [],
-        ustensilOptions: string[][] = [];
-
-      formattedRecipes.forEach((recipe: FormattedRecipe) => {
-        ingredientOptions.push(recipe.flatIngredients);
-        applianceOptions.push(recipe.appliance);
-        ustensilOptions.push(recipe.ustensils.flat());
-      });
-
-      setOptions({
-        ingredients: removeDuplicate(ingredientOptions.flat()),
-        appliances: removeDuplicate(applianceOptions.flat()),
-        ustensils: removeDuplicate(ustensilOptions.flat()),
-      });
-      setFilteredRecipes(formattedRecipes);
-    }
-  }, [depsFormattedRecipes]);
-
-  useEffect(() => {
-    const inputValues = Object.values(tagInput)
+    const inputValues = Object.values(selectedTags)
       .flat()
       .filter((value) => value.length > 0)
-      .map((v) => v.toLowerCase());
-
-    if (inputValues.length > 0) {
-      const foundRecipes = formattedRecipes.filter(
-        (recipe: FormattedRecipe) => {
-          return (
-            inputValues.every((value) =>
-              recipe?.flatIngredients.includes(value)
-            ) ||
-            inputValues.every((value) => recipe?.appliance.includes(value)) ||
-            inputValues.every((value) => recipe?.ustensils.includes(value))
-          );
-        }
-      );
-      setFilteredRecipes(foundRecipes);
-    } else {
-      setFilteredRecipes(formattedRecipes);
-    }
-  }, [
-    depsFormattedRecipes,
-    tagInput.ingredients.length,
-    tagInput.appliances.length,
-    tagInput.ustensils.length,
-  ]);
-
-  useEffect(() => {
+      .map((value) => value.toLowerCase());
     const term = searchTerm.trim().toLowerCase();
-    if (term.trim().length >= 3) {
-      const foundRecipes = formattedRecipes.filter(
-        (recipe: FormattedRecipe) => {
-          return (
-            recipe.name.toLowerCase().includes(term) ||
+
+    let foundRecipes: FormattedRecipe[] = formattedRecipes;
+
+    if (inputValues.length > 0 && term.length < 3) {
+      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
+        return inputValues.every(
+          (value) =>
+            recipe?.flatIngredients.includes(value) ||
+            recipe?.appliance.includes(value) ||
+            recipe?.ustensils.includes(value)
+        );
+      });
+    } else if (inputValues.length === 0 && term.length >= 3) {
+      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
+        return (
+          recipe.name.toLowerCase().includes(term) ||
+          recipe.description.toLowerCase().includes(term) ||
+          recipe.flatIngredients.find((ingredient) => ingredient.includes(term))
+        );
+      });
+    } else if (inputValues.length > 0 && term.length >= 3) {
+      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
+        return (
+          inputValues.every(
+            (value) =>
+              recipe?.flatIngredients.includes(value) ||
+              recipe?.appliance.includes(value) ||
+              recipe?.ustensils.includes(value)
+          ) &&
+          (recipe.name.toLowerCase().includes(term) ||
             recipe.description.toLowerCase().includes(term) ||
             recipe.flatIngredients.find((ingredient) =>
               ingredient.includes(term)
-            )
-          );
-        }
-      );
-      setFilteredRecipes(foundRecipes);
+            ))
+        );
+      });
     } else {
-      setFilteredRecipes(formattedRecipes);
+      foundRecipes = formattedRecipes;
     }
-  }, [searchTerm, depsFormattedRecipes]);
+    setFilteredRecipes(foundRecipes);
+    getTagOptions(foundRecipes);
+  }, [dependencyRecipes, searchTerm, selectedTags]);
 
   return (
     <>
@@ -116,17 +113,21 @@ export default function Recipes() {
       </header>
       <main>
         <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <Tag tagInput={tagInput} setTagInput={setTagInput} />
-        {options && (
+        <Tag selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+        {tagOptions && (
           <AutocompleteBar
-            options={options}
-            currentInput={currentInput}
-            setCurrentInput={setCurrentInput}
-            tagInput={tagInput}
-            setTagInput={setTagInput}
+            tagOptions={tagOptions}
+            searchTagTerm={searchTagTerm}
+            setSearchTagTerm={setSearchTagTerm}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
           />
         )}
-        <RecipeList filteredRecipes={filteredRecipes} />
+        <RecipeList
+          filteredRecipes={filteredRecipes}
+          searchTerm={searchTerm}
+          selectedTags={selectedTags}
+        />
       </main>
     </>
   );

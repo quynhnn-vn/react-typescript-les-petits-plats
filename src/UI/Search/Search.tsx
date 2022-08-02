@@ -1,6 +1,7 @@
 import React from "react";
-import searchIcon from "../../assets/search.svg";
+
 import { Form } from "react-bootstrap";
+import searchIcon from "../../assets/search.svg";
 
 import styles from "./Search.module.css";
 
@@ -25,6 +26,7 @@ export default function Search(props: SearchProps) {
         value={searchTerm}
         onChange={onChangeSearch}
         className={styles.SearchTerm}
+        autoComplete="off"
       />
       <img className={styles.SearchIcon} src={searchIcon} alt="Rechercher" />
     </section>

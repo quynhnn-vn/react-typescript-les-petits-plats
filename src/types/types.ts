@@ -1,4 +1,4 @@
-export type Option = {
+export type TagOptions = {
   ingredients: string[];
   appliances: string[];
   ustensils: string[];
@@ -26,14 +26,36 @@ export type FormattedRecipe = Omit<Recipe, "appliance"> & {
   flatIngredients: string[];
 };
 
-export type CurrentInput = {
+export type SearchTagTerm = {
   ingredients: string;
   appliances: string;
   ustensils: string;
 };
 
-export type TagInput = {
+export type SelectedTags = {
   ingredients: string[];
   appliances: string[];
   ustensils: string[];
 };
+
+export type ShowAll = {
+  ingredients: boolean;
+  appliances: boolean;
+  ustensils: boolean;
+};
+
+export enum colors {
+  blue = "var(--blue)",
+  green = "var(--green)",
+  red = "var(--red)",
+}
+
+export enum text {
+  ingredient = "ingredient",
+  appareil = "appareil",
+  ustensil = "ustensil",
+  ingredients = "ingredients",
+  appareils = "appareils",
+  ustensils = "ustensils",
+  appliances = "appliances",
+}

@@ -1,29 +1,45 @@
-import React from "react";
-import { dropdownList } from "../../common/constants";
-import { CurrentInput, Option, TagInput } from "../../types/types";
+import React, { useState } from "react";
+import { tagsList } from "../../common/constants";
+import {
+  SearchTagTerm,
+  TagOptions,
+  SelectedTags,
+  ShowAll,
+} from "../../types/types";
 import Autocomplete from "../Autocomplete/Autocomplete";
 
 import styles from "./AutocompleteBar.module.css";
 
 type AutocompleteBarProps = {
-  options: Option;
-  currentInput: CurrentInput;
-  setCurrentInput: React.Dispatch<React.SetStateAction<CurrentInput>>;
-  tagInput: TagInput;
-  setTagInput: React.Dispatch<React.SetStateAction<TagInput>>;
+  tagOptions: TagOptions;
+  searchTagTerm: SearchTagTerm;
+  setSearchTagTerm: React.Dispatch<React.SetStateAction<SearchTagTerm>>;
+  selectedTags: SelectedTags;
+  setSelectedTags: React.Dispatch<React.SetStateAction<SelectedTags>>;
 };
 
 export default function AutocompleteBar(props: AutocompleteBarProps) {
+  const [showAll, setShowAll] = useState<ShowAll>({
+    ingredients: false,
+    appliances: false,
+    ustensils: false,
+  });
+
   return (
     <section className={styles.AutocompleteBar}>
-      {dropdownList.map((item, index) => (
+      {tagsList.map((item, index) => (
         <Autocomplete
           {...props}
           key={index}
-          suggestions={props.options[item.value as keyof typeof props.options]}
-          title={item.title}
+          suggestions={
+            props.tagOptions[item.value as keyof typeof props.tagOptions]
+          }
+          plural={item.plural}
+          singular={item.singular}
           value={item.value}
-          variant={item.variant}
+          color={item.color}
+          showAll={showAll}
+          setShowAll={setShowAll}
         />
       ))}
     </section>

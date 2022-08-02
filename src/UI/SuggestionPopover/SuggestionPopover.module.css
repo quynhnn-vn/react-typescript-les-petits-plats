@@ -1,9 +1,11 @@
 .Popover {
   width: 250px;
-  border: 1px solid #86b7fe;
+  border: unset !important;
   border-top: unset;
-  margin-top: -9px;
+  /* position: relative; */
+  /* top: -9px !important; */
   border-radius: 0 0 5px 5px;
+  padding-top: 10px;
 }
 .Suggestions {
   list-style: none;
@@ -25,9 +27,7 @@
   text-transform: capitalize;
 }
 
-.SuggestionActive,
 .Suggestions li:hover {
-  /* background-color: #fff; */
   color: #000;
   cursor: pointer;
   font-weight: 700;

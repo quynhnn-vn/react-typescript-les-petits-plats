@@ -8,7 +8,8 @@ export const formatRecipes = (array: Recipe[]): FormattedRecipe[] => {
   if (array.length === 0) return [];
   return array.map((recipe) => ({
     ...recipe,
-    appliance: [recipe.appliance],
+    ustensils: recipe.ustensils.map((u) => u.toLowerCase()),
+    appliance: [recipe.appliance.toLowerCase()],
     flatIngredients: recipe.ingredients.flatMap((i) =>
       i.ingredient?.toLowerCase()
     ),

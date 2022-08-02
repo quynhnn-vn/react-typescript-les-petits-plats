@@ -1,17 +1,22 @@
-export const dropdownList = [
+import { colors, text } from "../types/types";
+
+export const tagsList = [
   {
-    title: "Ingredients",
-    variant: "#3282F7",
-    value: "ingredients",
+    color: colors.blue,
+    singular: text.ingredient,
+    plural: text.ingredients,
+    value: text.ingredients,
   },
   {
-    title: "Appareils",
-    variant: "#68D9A4",
-    value: "appliances",
+    color: colors.green,
+    singular: text.appareil,
+    plural: text.appareils,
+    value: text.appliances,
   },
   {
-    title: "Ustensiles",
-    variant: "#ED6454",
-    value: "ustensils",
+    color: colors.red,
+    singular: text.ustensil,
+    plural: text.ustensils,
+    value: text.ustensils,
   },
 ];

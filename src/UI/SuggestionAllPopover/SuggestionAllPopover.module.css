@@ -1,0 +1,44 @@
+.AllPopover {
+  border: unset !important;
+  border-radius: 0 0 5px 5px;
+  min-width: 639px;
+  overflow-y: scroll;
+  max-height: 397px;
+  padding-top: 10px;
+}
+
+.AllSuggestions {
+  width: 667px;
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  overflow-y: scroll;
+  list-style: none;
+  overflow-y: auto;
+  color: #fff;
+  padding: 0;
+}
+.AllSuggestions li {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 30px;
+  color: #ffffff;
+  padding: 0 24px;
+}
+.AllSuggestions li:first-letter {
+  text-transform: capitalize;
+}
+.AllSuggestionActive,
+.AllSuggestions li:hover {
+  /* background-color: #fff; */
+  color: #000;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.NoSuggestions {
+  color: #999;
+  padding: 0.5rem;
+}

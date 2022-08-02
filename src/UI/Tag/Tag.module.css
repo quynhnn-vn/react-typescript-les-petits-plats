@@ -5,8 +5,11 @@
   gap: 10px;
 }
 .TagBtn {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+}
+.TagBar span::first-letter {
+  text-transform: capitalize;
 }
