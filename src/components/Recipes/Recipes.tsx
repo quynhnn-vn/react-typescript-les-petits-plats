@@ -43,11 +43,12 @@ export default function Recipes() {
       applianceOptions: string[][] = [],
       ustensilOptions: string[][] = [];
 
-    recipes.forEach((recipe: FormattedRecipe) => {
+    for (let i = 0; i < recipes.length; i++) {
+      const recipe: FormattedRecipe = recipes[i];
       ingredientOptions.push(recipe.flatIngredients);
       applianceOptions.push(recipe.appliance);
       ustensilOptions.push(recipe.ustensils.flat());
-    });
+    }
 
     setTagOptions({
       ingredients: removeDuplicate(ingredientOptions.flat()),
@@ -57,34 +58,44 @@ export default function Recipes() {
   };
 
   useEffect(() => {
-    const inputValues = Object.values(selectedTags)
-      .flat()
-      .filter((value) => value.length > 0)
-      .map((value) => value.toLowerCase());
+    let inputValues: string[] = [];
+    const existedValues = Object.values(selectedTags).flat();
+    for (let i = 0; i < existedValues.length; i++) {
+      if (existedValues[i].length > 0)
+        inputValues.push(existedValues[i].toLowerCase());
+    }
+
     const term = searchTerm.trim().toLowerCase();
 
-    let foundRecipes: FormattedRecipe[] = formattedRecipes;
+    let foundRecipes: FormattedRecipe[] = [];
 
     if (inputValues.length > 0 && term.length < 3) {
-      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
-        return inputValues.every(
-          (value) =>
-            recipe?.flatIngredients.includes(value) ||
-            recipe?.appliance.includes(value) ||
-            recipe?.ustensils.includes(value)
-        );
-      });
+      for (let i = 0; i < formattedRecipes.length; i++) {
+        const recipe = formattedRecipes[i];
+        if (
+          inputValues.every(
+            (value) =>
+              recipe?.flatIngredients.includes(value) ||
+              recipe?.appliance.includes(value) ||
+              recipe?.ustensils.includes(value)
+          )
+        )
+          foundRecipes.push(recipe);
+      }
     } else if (inputValues.length === 0 && term.length >= 3) {
-      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
-        return (
+      for (let i = 0; i < formattedRecipes.length; i++) {
+        const recipe = formattedRecipes[i];
+        if (
           recipe.name.toLowerCase().includes(term) ||
           recipe.description.toLowerCase().includes(term) ||
           recipe.flatIngredients.find((ingredient) => ingredient.includes(term))
-        );
-      });
+        )
+          foundRecipes.push(recipe);
+      }
     } else if (inputValues.length > 0 && term.length >= 3) {
-      foundRecipes = formattedRecipes.filter((recipe: FormattedRecipe) => {
-        return (
+      for (let i = 0; i < formattedRecipes.length; i++) {
+        const recipe = formattedRecipes[i];
+        if (
           inputValues.every(
             (value) =>
               recipe?.flatIngredients.includes(value) ||
@@ -96,8 +107,9 @@ export default function Recipes() {
             recipe.flatIngredients.find((ingredient) =>
               ingredient.includes(term)
             ))
-        );
-      });
+        )
+          foundRecipes.push(recipe);
+      }
     } else {
       foundRecipes = formattedRecipes;
     }

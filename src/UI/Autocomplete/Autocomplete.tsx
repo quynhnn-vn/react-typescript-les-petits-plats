@@ -47,9 +47,14 @@ export default function Autocomplete(props: AutocompleteProps) {
   const target = useRef<HTMLInputElement>(null!);
 
   const changeShowAll = () => {
-    const newShowAll = Object.keys(showAll).reduce((result, k) => {
-      return { ...result, [k]: value === k };
-    }, {} as ShowAll);
+    const keysShowAll = Object.keys(showAll);
+
+    let newShowAll = { ...showAll } as ShowAll;
+    for (let i = 0; i < keysShowAll.length; i++) {
+      let key = keysShowAll[i];
+      newShowAll[key as keyof ShowAll] = Boolean(value === key);
+    }
+
     setShowAll(newShowAll);
   };
 
@@ -61,10 +66,12 @@ export default function Autocomplete(props: AutocompleteProps) {
       [eName as keyof SearchTagTerm]: eValue,
     });
 
-    const filtered = suggestions.filter(
-      (suggestion) =>
-        suggestion.toLowerCase().indexOf(eValue.toLowerCase()) !== -1
-    );
+    let filtered = [];
+    for (let i = 0; i < suggestions.length; i++) {
+      const suggestion = suggestions[i];
+      if (suggestion.toLowerCase().indexOf(eValue.toLowerCase()) !== -1)
+        filtered.push(suggestion);
+    }
 
     if (filtered.length > 0) {
       setShowAll({

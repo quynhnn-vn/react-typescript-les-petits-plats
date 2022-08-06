@@ -25,9 +25,11 @@ export default function AutocompleteBar(props: AutocompleteBarProps) {
     ustensils: false,
   });
 
-  return (
-    <section className={styles.AutocompleteBar}>
-      {tagsList.map((item, index) => (
+  let content = [];
+  if (tagsList && tagsList.length) {
+    for (let index = 0; index < tagsList.length; index++) {
+      const item = tagsList[index];
+      content.push(
         <Autocomplete
           {...props}
           key={index}
@@ -41,7 +43,9 @@ export default function AutocompleteBar(props: AutocompleteBarProps) {
           showAll={showAll}
           setShowAll={setShowAll}
         />
-      ))}
-    </section>
-  );
+      );
+    }
+  }
+
+  return <section className={styles.AutocompleteBar}>{content}</section>;
 }

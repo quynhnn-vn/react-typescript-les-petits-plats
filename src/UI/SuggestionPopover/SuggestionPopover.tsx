@@ -29,17 +29,15 @@ export default function SuggestionPopover(props: SuggestionPopoverProps) {
 
   if (showSuggestions && searchTagTerm[value as keyof SearchTagTerm]) {
     if (filteredSuggestions.length) {
-      suggestionsListComponent = (
-        <ul className={styles.Suggestions}>
-          {filteredSuggestions.map((suggestion: string, index: number) => {
-            return (
-              <li key={suggestion} onClick={(e) => onClick(e, value)}>
-                {suggestion}
-              </li>
-            );
-          })}
-        </ul>
-      );
+      let list = [];
+      for (let index = 0; index < filteredSuggestions.length; index++) {
+        list.push(
+          <li key={index} onClick={(e) => onClick(e, value)}>
+            {filteredSuggestions[index]}
+          </li>
+        );
+      }
+      suggestionsListComponent = <ul className={styles.Suggestions}>{list}</ul>;
     }
   }
 

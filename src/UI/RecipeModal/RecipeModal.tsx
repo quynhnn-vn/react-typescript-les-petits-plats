@@ -18,6 +18,20 @@ export default function RecipeModal(props: RecipeModalProps) {
 
   const onClose = () => setShowDetails(false);
 
+  let content = [];
+  if (recipe.ingredients && recipe.ingredients.length) {
+    for (let index = 0; index < recipe.ingredients.length; index++) {
+      const ingredientItem = recipe.ingredients[index];
+      content.push(
+        <p key={index}>
+          {ingredientItem.ingredient}{" "}
+          {ingredientItem.unit &&
+            `: ${ingredientItem?.quantity} ${ingredientItem.unit}`}
+        </p>
+      );
+    }
+  }
+
   return (
     <Modal show={showDetails} onHide={onClose}>
       <Modal.Body>
@@ -36,15 +50,7 @@ export default function RecipeModal(props: RecipeModalProps) {
             </span>
           </Card.Header>
           <Card.Body className={styles.RecipeText}>
-            <div className={styles.RecipeContent}>
-              {recipe.ingredients.map((ingredientItem, index) => (
-                <p key={index}>
-                  {ingredientItem.ingredient}{" "}
-                  {ingredientItem.unit &&
-                    `: ${ingredientItem?.quantity} ${ingredientItem.unit}`}
-                </p>
-              ))}
-            </div>
+            <div className={styles.RecipeContent}>{content}</div>
             <p className={styles.RecipeContent}>{recipe.description}</p>
           </Card.Body>
         </Card>

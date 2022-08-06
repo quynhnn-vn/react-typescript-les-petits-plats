@@ -19,6 +19,21 @@ export default function RecipeCard(props: RecipeCardProps) {
 
   const onShowDetails = () => setShowDetails(true);
 
+  let content = [];
+
+  if (recipe.ingredients && recipe.ingredients.length) {
+    for (let index = 0; index < recipe.ingredients.length; index++) {
+      const ingredientItem = recipe.ingredients[index];
+      content.push(
+        <p key={index}>
+          {ingredientItem.ingredient}{" "}
+          {ingredientItem.unit &&
+            `: ${ingredientItem?.quantity} ${ingredientItem.unit}`}
+        </p>
+      );
+    }
+  }
+
   return (
     <>
       <Card className={styles.RecipeContainer} onClick={onShowDetails}>
@@ -36,15 +51,7 @@ export default function RecipeCard(props: RecipeCardProps) {
           </span>
         </Card.Header>
         <Card.Body className={styles.RecipeText}>
-          <div>
-            {recipe.ingredients.map((ingredientItem, index) => (
-              <p key={index}>
-                {ingredientItem.ingredient}{" "}
-                {ingredientItem.unit &&
-                  `: ${ingredientItem?.quantity} ${ingredientItem.unit}`}
-              </p>
-            ))}
-          </div>
+          <div>{content}</div>
           <p className={styles.RecipeContent}>{recipe.description}</p>
         </Card.Body>
       </Card>
