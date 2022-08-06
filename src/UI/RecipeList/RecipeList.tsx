@@ -13,15 +13,22 @@ type RecipeListProps = {
 export default function RecipeList(props: RecipeListProps) {
   const { filteredRecipes, searchTerm, selectedTags } = props;
 
+  let content = [];
+  if (filteredRecipes && filteredRecipes.length) {
+    for (let index = 0; index < filteredRecipes.length; index++) {
+      content.push(
+        <Col key={index}>
+          <RecipeCard recipe={filteredRecipes[index]} />
+        </Col>
+      );
+    }
+  }
+
   return (
     <section className={styles.RecipesList}>
       {filteredRecipes.length > 0 ? (
         <Row xs={1} md={3} className="g-5">
-          {filteredRecipes.map((recipe, index) => (
-            <Col key={index}>
-              <RecipeCard recipe={recipe} />
-            </Col>
-          ))}
+          {content}
         </Row>
       ) : (
         <div className={styles.EmptyList}>

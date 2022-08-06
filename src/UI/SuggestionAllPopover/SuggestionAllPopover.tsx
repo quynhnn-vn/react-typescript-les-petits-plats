@@ -23,18 +23,18 @@ export default function SuggestionAllPopover(props: SuggestionAllPopoverProps) {
   } = props;
 
   let allList = null;
-  if (suggestions.length)
-    allList = (
-      <ul className={styles.AllSuggestions}>
-        {suggestions
-          .sort((a, b) => (a < b ? -1 : 1))
-          .map((suggestion, index) => (
-            <li key={index} onClick={(e) => onClick(e, value)}>
-              {suggestion}
-            </li>
-          ))}
-      </ul>
-    );
+  if (suggestions.length) {
+    const sortedSuggestions = suggestions.sort((a, b) => (a < b ? -1 : 1));
+    let list = [];
+    for (let index = 0; index < sortedSuggestions.length; index++) {
+      list.push(
+        <li key={index} onClick={(e) => onClick(e, value)}>
+          {sortedSuggestions[index]}
+        </li>
+      );
+    }
+    allList = <ul className={styles.AllSuggestions}>{list}</ul>;
+  }
 
   return (
     <Overlay

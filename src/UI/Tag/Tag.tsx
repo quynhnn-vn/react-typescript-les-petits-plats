@@ -15,44 +15,57 @@ type TagProps = {
 export default function Tag(props: TagProps) {
   const { selectedTags, setSelectedTags } = props;
 
-  const selectedTagsInText = Object.values(selectedTags)
-    .flat()
-    .filter((value) => value.length > 0)
-    .map((v) => v.toLowerCase());
-
   const onRemoveSelectedTags = (tag: string) => {
     const newSelectedTags = {
       ...selectedTags,
     };
-    Object.keys(newSelectedTags).forEach((key) => {
+    const keysOfNewSelectedTags = Object.keys(newSelectedTags);
+    for (let i = 0; i < keysOfNewSelectedTags.length; i++) {
+      const key = keysOfNewSelectedTags[i];
       const index = newSelectedTags[key as keyof SelectedTags].indexOf(tag);
       if (index !== -1) {
         newSelectedTags[key as keyof SelectedTags].splice(index, 1);
       }
-    });
+    }
     setSelectedTags(newSelectedTags);
   };
 
-  return selectedTagsInText.length > 0 ? (
-    <section className={styles.TagBar}>
-      {tagsList.map((item) => {
-        return selectedTags[item.value as keyof SelectedTags].map(
-          (tag, index) => (
-            <Button
-              key={index}
-              className={styles.TagBtn}
-              onClick={() => onRemoveSelectedTags(tag)}
-              style={{
-                background: item.color,
-                borderColor: item.color,
-              }}
-            >
-              <span>{tag}</span>
-              <img src={closeIcon} alt="Close" />
-            </Button>
-          )
-        );
-      })}
-    </section>
+  const cloneSelectedTags = Object.values(selectedTags).flat();
+  let existedSelectedTags = [];
+  for (let i = 0; i < cloneSelectedTags.length; i++) {
+    if (
+      cloneSelectedTags[i].length > 0 &&
+      typeof cloneSelectedTags[i] === "string"
+    ) {
+      existedSelectedTags.push(cloneSelectedTags[i].toLowerCase());
+    }
+  }
+
+  let content = [];
+  for (let j = 0; j < tagsList.length; j++) {
+    const item = tagsList[j] as any;
+
+    const tagsOfItem = selectedTags[item.value as keyof SelectedTags];
+    for (let k = 0; k < tagsOfItem.length; k++) {
+      const tag = tagsOfItem[k];
+      content.push(
+        <Button
+          key={j + "-" + k}
+          className={styles.TagBtn}
+          onClick={() => onRemoveSelectedTags(tag)}
+          style={{
+            background: item.color,
+            borderColor: item.color,
+          }}
+        >
+          <span>{tag}</span>
+          <img src={closeIcon} alt="Close" />
+        </Button>
+      );
+    }
+  }
+
+  return existedSelectedTags.length > 0 ? (
+    <section className={styles.TagBar}>{content}</section>
   ) : null;
 }
