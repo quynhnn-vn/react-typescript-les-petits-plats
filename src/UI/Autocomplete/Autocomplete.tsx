@@ -109,7 +109,7 @@ export default function Autocomplete(props: AutocompleteProps) {
     <div
       className={styles.Form}
       style={{
-        width: showAll[value as keyof ShowAll] ? "667px" : "170px",
+        width: showAll[value as keyof ShowAll] ? "calc(100%/3)" : "max-content",
       }}
     >
       <Form.Control

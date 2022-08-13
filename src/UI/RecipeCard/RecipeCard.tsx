@@ -36,10 +36,7 @@ export default function RecipeCard(props: RecipeCardProps) {
           </span>
         </Card.Header>
         <Card.Body className={styles.RecipeText}>
-          <div
-
-          //   className={styles.RecipeContent}
-          >
+          <div>
             {recipe.ingredients.map((ingredientItem, index) => (
               <p key={index}>
                 {ingredientItem.ingredient}{" "}

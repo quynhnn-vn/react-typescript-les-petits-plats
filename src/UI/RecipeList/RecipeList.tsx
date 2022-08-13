@@ -16,7 +16,7 @@ export default function RecipeList(props: RecipeListProps) {
   return (
     <section className={styles.RecipesList}>
       {filteredRecipes.length > 0 ? (
-        <Row xs={2} md={3} className="g-5">
+        <Row xs={1} md={3} className="g-5">
           {filteredRecipes.map((recipe, index) => (
             <Col key={index}>
               <RecipeCard recipe={recipe} />
