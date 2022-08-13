@@ -35,8 +35,9 @@ export default function Recipes() {
     ustensils: "",
   });
 
-  const formattedRecipes = formatRecipes(recipes);
-  const dependencyRecipes = JSON.stringify(formattedRecipes);
+  const [formattedRecipes, setFormattedRecipes] = useState<FormattedRecipe[]>(
+    []
+  );
 
   const getTagOptions = (recipes: FormattedRecipe[]) => {
     let ingredientOptions: string[][] = [],
@@ -55,6 +56,10 @@ export default function Recipes() {
       ustensils: removeDuplicate(ustensilOptions.flat()),
     });
   };
+
+  useEffect(() => {
+    setFormattedRecipes(formatRecipes(recipes));
+  }, []);
 
   useEffect(() => {
     const inputValues = Object.values(selectedTags)
@@ -103,7 +108,7 @@ export default function Recipes() {
     }
     setFilteredRecipes(foundRecipes);
     getTagOptions(foundRecipes);
-  }, [dependencyRecipes, searchTerm, selectedTags]);
+  }, [formattedRecipes, searchTerm, selectedTags]);
 
   return (
     <>
