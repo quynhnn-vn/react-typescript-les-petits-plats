@@ -71,10 +71,10 @@ export default function Autocomplete(props: AutocompleteProps) {
       const suggestion = suggestions[i];
       if (
         suggestion &&
-        typeof suggestion === "string" &&
         eValue &&
-        typeof eValue === "string" &&
-        suggestion.toLowerCase().indexOf(eValue.toLowerCase()) !== -1
+        String(suggestion)
+          .toLowerCase()
+          .indexOf(String(eValue).toLowerCase()) !== -1
       )
         filtered.push(suggestion);
     }

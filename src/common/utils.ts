@@ -25,14 +25,13 @@ export const formatRecipes = (array: Recipe[]): FormattedRecipe[] => {
 
     for (let j = 0; j < recipe.ingredients.length; j++) {
       let ingredient = recipe.ingredients[j];
-      if (ingredient.ingredient && typeof ingredient.ingredient === "string")
-        flatIngredients.push(ingredient.ingredient.toLowerCase());
+      if (ingredient.ingredient)
+        flatIngredients.push(String(ingredient.ingredient).toLowerCase());
     }
 
     for (let k = 0; k < recipe.ustensils.length; k++) {
       let ustensil = recipe.ustensils[k];
-      if (ustensil && typeof ustensil === "string")
-        newUstensils.push(ustensil.toLowerCase());
+      if (ustensil) newUstensils.push(String(ustensil).toLowerCase());
     }
 
     if (recipe.appliance)

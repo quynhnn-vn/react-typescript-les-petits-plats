@@ -33,11 +33,8 @@ export default function Tag(props: TagProps) {
   const cloneSelectedTags = Object.values(selectedTags).flat();
   let existedSelectedTags = [];
   for (let i = 0; i < cloneSelectedTags.length; i++) {
-    if (
-      cloneSelectedTags[i].length > 0 &&
-      typeof cloneSelectedTags[i] === "string"
-    ) {
-      existedSelectedTags.push(cloneSelectedTags[i].toLowerCase());
+    if (cloneSelectedTags[i].length > 0) {
+      existedSelectedTags.push(String(cloneSelectedTags[i]).toLowerCase());
     }
   }
 
