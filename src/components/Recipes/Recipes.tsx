@@ -46,9 +46,9 @@ export default function Recipes() {
 
     for (let i = 0; i < recipes.length; i++) {
       const recipe: FormattedRecipe = recipes[i];
-      ingredientOptions.push(recipe.flatIngredients);
-      applianceOptions.push(recipe.appliance);
-      ustensilOptions.push(recipe.ustensils.flat());
+      ingredientOptions[ingredientOptions.length] = recipe.flatIngredients;
+      applianceOptions[applianceOptions.length] = recipe.appliance;
+      ustensilOptions[ustensilOptions.length] = recipe.ustensils.flat();
     }
 
     setTagOptions({
@@ -67,7 +67,9 @@ export default function Recipes() {
     const existedValues = Object.values(selectedTags).flat();
     for (let i = 0; i < existedValues.length; i++) {
       if (existedValues[i].length > 0)
-        inputValues.push(String(existedValues[i]).toLowerCase());
+        inputValues[inputValues.length] = String(
+          existedValues[i]
+        ).toLowerCase();
     }
 
     const term = String(searchTerm).trim().toLowerCase();
@@ -78,47 +80,68 @@ export default function Recipes() {
       if (inputValues.length > 0 && term.length < 3) {
         for (let i = 0; i < formattedRecipes.length; i++) {
           const recipe = formattedRecipes[i];
-          if (
-            inputValues.every(
-              (value) =>
-                recipe?.flatIngredients.includes(value) ||
-                recipe?.appliance.includes(value) ||
-                recipe?.ustensils.includes(value)
-            )
-          )
-            foundRecipes.push(recipe);
+          let isFound = Array(inputValues.length).fill(false);
+          for (let j = 0; j < inputValues.length; j++) {
+            const value = inputValues[j];
+            if (
+              recipe?.flatIngredients.includes(value) ||
+              recipe?.appliance.includes(value) ||
+              recipe?.ustensils.includes(value)
+            ) {
+              isFound[j] = true;
+            }
+          }
+          if (!isFound.includes(false))
+            foundRecipes[foundRecipes.length] = recipe;
         }
       } else if (inputValues.length === 0 && term.length >= 3) {
         for (let i = 0; i < formattedRecipes.length; i++) {
           const recipe = formattedRecipes[i];
+
+          let isFoundIngredients = false;
+          for (let j = 0; j < recipe.flatIngredients.length; j++) {
+            if (recipe.flatIngredients[j].includes(term))
+              isFoundIngredients = true;
+          }
+
           if (
             recipe &&
             (String(recipe.name).toLowerCase().includes(term) ||
               String(recipe.description).toLowerCase().includes(term) ||
-              recipe.flatIngredients.find((ingredient) =>
-                ingredient.includes(term)
-              ))
+              isFoundIngredients)
           )
-            foundRecipes.push(recipe);
+            foundRecipes[foundRecipes.length] = recipe;
         }
       } else if (inputValues.length > 0 && term.length >= 3) {
         for (let i = 0; i < formattedRecipes.length; i++) {
           const recipe = formattedRecipes[i];
+
+          let isFound = Array(inputValues.length).fill(false);
+          for (let j = 0; j < inputValues.length; j++) {
+            const value = inputValues[j];
+            if (
+              recipe?.flatIngredients.includes(value) ||
+              recipe?.appliance.includes(value) ||
+              recipe?.ustensils.includes(value)
+            ) {
+              isFound[j] = true;
+            }
+          }
+
+          let isFoundIngredients = false;
+          for (let k = 0; k < recipe.flatIngredients.length; k++) {
+            if (recipe.flatIngredients[k].includes(term))
+              isFoundIngredients = true;
+          }
+
           if (
             recipe &&
-            inputValues.every(
-              (value) =>
-                recipe?.flatIngredients.includes(value) ||
-                recipe?.appliance.includes(value) ||
-                recipe?.ustensils.includes(value)
-            ) &&
+            !isFound.includes(false) &&
             (String(recipe.name).toLowerCase().includes(term) ||
               String(recipe.description).toLowerCase().includes(term) ||
-              recipe.flatIngredients.find((ingredient) =>
-                ingredient.includes(term)
-              ))
+              isFoundIngredients)
           )
-            foundRecipes.push(recipe);
+            foundRecipes[foundRecipes.length] = recipe;
         }
       } else {
         foundRecipes = formattedRecipes;
